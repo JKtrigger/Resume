@@ -13,9 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls import url
 from django.contrib import admin
+from django.urls import include
 from django.urls import path
+from django.views.generic.base import RedirectView
+from django.views.static import serve
+
+from title_page import title_urls, title_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path(r'', RedirectView.as_view(pattern_name='me-view', permanent=False)),
+    path('main/',   include(title_urls)),
+    url(r'^static/(?P<path>.*)$', serve, {
+        'document_root': settings.STATIC_ROOT, }),
 ]
+handler404 = title_views.handler404

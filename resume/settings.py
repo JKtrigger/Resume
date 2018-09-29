@@ -11,21 +11,36 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import sys
+
+import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+try:
+    with open(os.environ['CONFIG'], 'r') as config_file:
+        CONFIG = yaml.load(config_file)
+except KeyError:
+    sys.stdout.write(
+        "В пользовательском окружении отсутствует переменная "
+        "CONFIG. \n Переменная CONFIG это строка, абсолютного пути"
+        "к файлу настроек.\n Пример проброса переменой в окружение \n"
+        "export CONFIG=~/project_path/config.yaml \n"
+        "Пропишите эту часть в .virtualenvs/{env_name}/bin/postacivate"
+    )
+    sys.exit(True)
+GLOBAL = CONFIG['GLOBAL']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0q)n-o$u6pqj6+ls*$hbx=7o=mtt6m%gee$m#9!j!d_nf8xe!a'
+SECRET_KEY = GLOBAL['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = GLOBAL['DEBUG']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = GLOBAL['ALLOWED_HOSTS']
 
 
 # Application definition
@@ -37,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'resume',
+    'title_page'
 ]
 
 MIDDLEWARE = [
@@ -72,13 +89,7 @@ WSGI_APPLICATION = 'resume.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = GLOBAL['DATABASES']
 
 
 # Password validation
@@ -86,16 +97,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'NumericPasswordValidator',
     },
 ]
 
@@ -113,8 +128,21 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_ROOT_DIR = GLOBAL['STATIC_DIR']
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'STATIC'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, STATIC_ROOT_DIR)
 STATIC_URL = '/static/'
+
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+DEBUG_PROPAGATE_EXCEPTIONS = GLOBAL['DEBUG_PROPAGATE_EXCEPTIONS']
