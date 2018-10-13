@@ -1,7 +1,6 @@
 # cat requirements.txt
 # pip3 install -r requirements.txt
 Django==2.1
-pkg-resources==0.0.0
 pyaml==17.12.1
 pytz==2018.5
 PyYAML==3.13

@@ -1,0 +1,4 @@
+/STATIC_ROOT/*
+/.idea/*
+*.sql*
+**/__*
