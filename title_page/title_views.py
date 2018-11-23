@@ -9,7 +9,7 @@ class AboutMeView(TemplateView):
         context = super().get_context_data(**kwargs)
         # Добавление текста в контекст
 
-        context['bottom_left_link'] = ''
+        context['bottom_left_link'] = '/vk_api_friends/'
         context['bottom_left_title'] = 'Идеи'
         context['bottom_left_text'] = 'Идеи проектов со ссылкой'
 

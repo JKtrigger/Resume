@@ -1,11 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    {{user_vk}}{{leave}}
-</head>
-<body>
+{% extends "vk_com/login.html" %}
+{% load static %}
+{% block main %}
+    <div class="row">
+            <p class="first_letter justify col-md-4">
+                Приветсвую тебя {{user_vk}}!!! <br>
+                В общем идея следущая: <br>
+                Вы ввели свои учетные данные. Я их ни как ни храню.
+                Это можно будет проверить. Просмотрев
+                <a href="https://github.com/JKtrigger/resume/tree/vk_issue">
+                    код. </a>.
+                А ниже можно будет увидеть своих друзей из VK.<br>
+                Если вы конечно ввели True данные. 
+                <br>
 
-</body>
-</html>
+            </p>
+            <p class="col-md-4">
+                <a href="{{logout_link}}"
+                   class="btn btn-primary btn-lg active"
+                   role="button" aria-pressed="true">{{logout_text}}</a>
+
+            </p>
+    </div>
+    {% for friend in friends %}
+    <div class="row">
+        <tr>
+            <img src="{{friend.photo_200_orig}}"/><br>
+            <p>{{friend.nickname}}</p><br>
+            <td></td><br>
+        </tr>
+    </div><br>
+    {% endfor %}
+{% endblock %}
