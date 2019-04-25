@@ -26,9 +26,8 @@ from title_page import title_urls, title_views
 from vk_com import VK_urls
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('vk_api_friends/', include(VK_urls)),
-    path(r'', RedirectView.as_view(pattern_name='me-view', permanent=False)),
+    path(r'', RedirectView.as_view(pattern_name='login', permanent=False)),
     path('main/',   include(title_urls)),
     url(r'^static/(?P<path>.*)$', serve, {
         'document_root': settings.STATIC_ROOT, }),

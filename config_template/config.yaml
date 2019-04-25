@@ -1,0 +1,12 @@
+# Настойка settings.py
+GLOBAL:
+  SECRET_KEY: 123@123
+  DEBUG: !!bool true
+  DATABASES:
+    default:
+      ENGINE: django.db.backends.sqlite3
+      NAME: './sqlite3.db'
+  ALLOWED_HOSTS:
+    - 127.0.0.1
+  STATIC_DIR: './STATIC_ROOT'
+  DEBUG_PROPAGATE_EXCEPTIONS: !!bool false
